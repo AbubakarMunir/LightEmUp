@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CharacterBehaviour : MonoBehaviour
 {
-
+    CameraController camController;
     [SerializeField] private Rigidbody2D rb;
+    private Animator animator;
     public enum STATE
     {
         STATIC = 0,
@@ -17,8 +18,10 @@ public class CharacterBehaviour : MonoBehaviour
     public int jcount=1;
     private void Awake()
     {
+        camController = FindObjectOfType<CameraController>();
         currentState = STATE.STATIC;
         rb = GetComponent<Rigidbody2D>();
+        animator = transform.GetChild(0).GetComponent<Animator>();
     }
     void Start()
     {
@@ -29,7 +32,7 @@ public class CharacterBehaviour : MonoBehaviour
     void Update()
     {
         //ClampPositions();
-      
+        transform.rotation = Quaternion.identity;
     }
 
     public void JumpRight()
@@ -37,6 +40,9 @@ public class CharacterBehaviour : MonoBehaviour
         CheckAndUpdateState();
         if (currentState == STATE.CANTJUMP)
             return;
+        transform.localScale = new Vector3(1, 1, 1);
+        animator.SetBool("flip",true);
+        animator.SetBool("idle", false);
         rb.AddForce(new Vector2(1.5f, 10), ForceMode2D.Impulse);
     }
 
@@ -45,6 +51,9 @@ public class CharacterBehaviour : MonoBehaviour
         CheckAndUpdateState();
         if (currentState == STATE.CANTJUMP)
             return;
+        transform.localScale = new Vector3(-1, 1, 1);
+        animator.SetBool("flip", true);
+        animator.SetBool("idle", false);
         rb.AddForce(new Vector2(-1.5f, 10), ForceMode2D.Impulse);
     }
 
@@ -52,9 +61,12 @@ public class CharacterBehaviour : MonoBehaviour
     {
         if (currentState == STATE.STATIC)
         {
+            //animator.SetBool("idle", true);
             currentState = STATE.FREE;
             rb.bodyType = RigidbodyType2D.Dynamic;
             jcount = 1;
+            GameManager.player.transform.parent = null;
+            camController.moveToObject = false;
         }
 
         else if(currentState==STATE.FREE)
@@ -88,8 +100,16 @@ public class CharacterBehaviour : MonoBehaviour
     public void StopHere()
     {
         rb.bodyType = RigidbodyType2D.Static;
+        animator.SetBool("idle", true);
+        animator.SetBool("flip", false);
+        
     }
 
+
+    public void Flip()
+    {
+
+    }
     
 }
 

@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ObjectManager : MonoBehaviour
 {
+    CameraController camController;
     MeshRenderer _renderer;
     BoxCollider2D boxCollider;
     [SerializeField] Material simple;
@@ -13,6 +14,7 @@ public class ObjectManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        camController = FindObjectOfType<CameraController>();
         characterBehaviour = GameManager.player.GetComponent<CharacterBehaviour>();
         boxCollider = GetComponent<BoxCollider2D>();
         _renderer = GetComponent<MeshRenderer>();
@@ -27,8 +29,11 @@ public class ObjectManager : MonoBehaviour
                 return;
             caughtOnce = true;
             HighLight();
+            GameManager.player.transform.parent=transform;
             characterBehaviour.StopHere();
             characterBehaviour.currentState = CharacterBehaviour.STATE.STATIC;
+            camController.moveToObject = true;
+            camController.activeObject = gameObject;
         }
         else
         {
