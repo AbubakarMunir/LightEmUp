@@ -31,14 +31,14 @@ public class ObjectManager : MonoBehaviour
             HighLight();
             GameManager.player.transform.parent=transform;
             characterBehaviour.StopHere();
-            characterBehaviour.currentState = CharacterBehaviour.STATE.STATIC;
+            characterBehaviour.currentState = CharacterBehaviour.STATE.GROUNDED;
             camController.moveToObject = true;
             camController.activeObject = gameObject;
         }
         else
         {
             caughtOnce = false;
-            UnHighLight();
+            //UnHighLight();
         }
     }
 

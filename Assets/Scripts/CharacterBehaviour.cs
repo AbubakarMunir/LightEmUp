@@ -12,6 +12,8 @@ public class CharacterBehaviour : MonoBehaviour
         STATIC = 0,
         FREE=1,
         CANTJUMP = 2,
+        GROUNDED = 3,
+        HANGING =4
     }
 
     public STATE currentState;
@@ -31,8 +33,20 @@ public class CharacterBehaviour : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //ClampPositions();
         transform.rotation = Quaternion.identity;
+        if(!Physics.Raycast(transform.position, -Vector3.up, 0.2f) && currentState==STATE.GROUNDED)
+        {
+            animator.SetBool("hanging",true);
+            animator.SetBool("idle", false);
+            currentState = STATE.HANGING;
+        }
+        else if(currentState == STATE.GROUNDED)
+        {
+            animator.SetBool("hanging", false);
+            animator.SetBool("idle", true);
+            
+        }
+
     }
 
     public void JumpRight()
@@ -59,7 +73,7 @@ public class CharacterBehaviour : MonoBehaviour
 
     private void CheckAndUpdateState()
     {
-        if (currentState == STATE.STATIC)
+        if (currentState == STATE.STATIC || currentState == STATE.GROUNDED || currentState == STATE.HANGING)
         {
             //animator.SetBool("idle", true);
             currentState = STATE.FREE;
