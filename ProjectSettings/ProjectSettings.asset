@@ -531,7 +531,8 @@ PlayerSettings:
   webGLDecompressionFallback: 0
   scriptingDefineSymbols:
     1: UNITY_POST_PROCESSING_STACK_V2
-    7: UNITY_POST_PROCESSING_STACK_V2
+    4: gameanalytics_max_enabled;gameanalytics_admob_enabled
+    7: UNITY_POST_PROCESSING_STACK_V2;gameanalytics_max_enabled;gameanalytics_admob_enabled
     13: UNITY_POST_PROCESSING_STACK_V2
     14: UNITY_POST_PROCESSING_STACK_V2
     19: UNITY_POST_PROCESSING_STACK_V2
