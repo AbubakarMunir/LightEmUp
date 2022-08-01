@@ -29,6 +29,7 @@ public class ObjectManager : MonoBehaviour
                 return;
             caughtOnce = true;
             HighLight();
+            StartCoroutine(PlayParticles());
             GameManager.player.transform.parent=transform;
             characterBehaviour.StopHere();
             characterBehaviour.currentState = CharacterBehaviour.STATE.GROUNDED;
@@ -42,7 +43,12 @@ public class ObjectManager : MonoBehaviour
         }
     }
 
-    
+    IEnumerator PlayParticles()
+    {
+        transform.GetChild(0).gameObject.SetActive(true);
+        yield return new WaitForSeconds(2);
+        transform.GetChild(0).gameObject.SetActive(false);
+    }
 
     public void HighLight()
     {

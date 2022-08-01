@@ -13,7 +13,9 @@ public class CharacterBehaviour : MonoBehaviour
         FREE=1,
         CANTJUMP = 2,
         GROUNDED = 3,
-        HANGING =4
+        HANGING =4,
+        DEAD=5
+
     }
 
     public STATE currentState;
@@ -34,6 +36,11 @@ public class CharacterBehaviour : MonoBehaviour
     void Update()
     {
         transform.rotation = Quaternion.identity;
+        if(transform.position.y<-4 &&jcount<=0)
+        {
+            camController.death = true;
+            camController.moveToObject = false;
+        }
         if(!Physics.Raycast(transform.position, -Vector3.up, 0.2f) && currentState==STATE.GROUNDED)
         {
             animator.SetBool("hanging",true);
