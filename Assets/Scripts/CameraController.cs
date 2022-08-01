@@ -17,17 +17,28 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(moveToObject)
-        {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(activeObject.transform.position.x,activeObject.transform.position.y,initialPos.z+5), 0.01f);
-        }
-        else if(death)
+        if (GameManager.player.GetComponent<CharacterBehaviour>().currentState == CharacterBehaviour.STATE.STATIC)
+            return;
+        if(death)
         {
             transform.position = Vector3.Lerp(transform.position, deathPos, 0.3f);
         }
         else
         {
-            transform.position = Vector3.Lerp(transform.position, initialPos, 0.01f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z + 7), 0.01f);
         }
+        
+        //if(moveToObject)
+        //{
+        //    transform.position = Vector3.Lerp(transform.position, new Vector3(activeObject.transform.position.x,activeObject.transform.position.y,initialPos.z+5), 0.01f);
+        //}
+        //else if(death)
+        //{
+        //    transform.position = Vector3.Lerp(transform.position, deathPos, 0.3f);
+        //}
+        //else
+        //{
+        //    transform.position = Vector3.Lerp(transform.position, initialPos, 0.01f);
+        //}
     }
 }
