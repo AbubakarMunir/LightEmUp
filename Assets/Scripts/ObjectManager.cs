@@ -31,7 +31,6 @@ public class ObjectManager : MonoBehaviour
             HighLight();
             StartCoroutine(PlayParticles());
             GameManager.player.transform.parent=transform;
-            characterBehaviour.StopHere();
             StateManager.SetState(StateManager.STATE.GROUNDED);
             camController.moveToObject = true;
             camController.activeObject = gameObject;
@@ -39,7 +38,6 @@ public class ObjectManager : MonoBehaviour
         else
         {
             caughtOnce = false;
-            //UnHighLight();
         }
     }
 

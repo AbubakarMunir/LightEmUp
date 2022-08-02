@@ -4,6 +4,11 @@ using UnityEngine;
 
 public class StateManager : MonoBehaviour
 {
+    CharacterBehaviour characterBehaviour;
+    Rigidbody2D rb;
+    CameraController camController;
+    AnimatorStateManager animatorStateManager;
+    static StateManager instance;
     public enum STATE
     {
         STATIC = 0,
@@ -11,8 +16,17 @@ public class StateManager : MonoBehaviour
         CANTJUMP = 2,
         GROUNDED = 3,
         HANGING = 4,
-        DEAD = 5
+        DEAD = 5,
 
+    }
+
+    private void Awake()
+    {
+        characterBehaviour = GetComponent<CharacterBehaviour>();
+        animatorStateManager = GetComponent<AnimatorStateManager>();
+        rb = GetComponent<Rigidbody2D>();
+        camController = FindObjectOfType<CameraController>();
+        instance = this;
     }
 
     private static STATE currentState;
@@ -20,6 +34,19 @@ public class StateManager : MonoBehaviour
 
     public static void SetState(STATE state)
     {
+        if(state==STATE.FREE)
+        {
+            instance.SetToFree();
+        }
+        else if(state==STATE.HANGING)
+        {
+            instance.animatorStateManager.SetToHanging();
+        }
+        else if(state==STATE.GROUNDED)
+        {
+            instance.animatorStateManager.SetToStatic();
+            instance.rb.bodyType = RigidbodyType2D.Static;
+        }
         currentState = state;
     }
 
@@ -28,5 +55,19 @@ public class StateManager : MonoBehaviour
         return currentState;
     }
 
+    void SetToFree()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        characterBehaviour.jcount = 1;
+        GameManager.player.transform.parent = null;
+        camController.moveToObject = false;
+    }
 
+    void SetToHanging()
+    {
+        rb.bodyType = RigidbodyType2D.Dynamic;
+        characterBehaviour.jcount = 1;
+        GameManager.player.transform.parent = null;
+        camController.moveToObject = false;
+    }
 }

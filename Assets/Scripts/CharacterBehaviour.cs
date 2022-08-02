@@ -16,12 +16,7 @@ public class CharacterBehaviour : MonoBehaviour
         StateManager.SetState(StateManager.STATE.STATIC);
         rb = GetComponent<Rigidbody2D>();
     }
-    void Start()
-    {
-       
-    }
-
-  
+   
     void Update()
     {
         transform.rotation = Quaternion.identity;
@@ -31,17 +26,7 @@ public class CharacterBehaviour : MonoBehaviour
             camController.moveToObject = false;
         }
         if(!Physics.Raycast(transform.position, -Vector3.up, 0.2f) && StateManager.GetState()==StateManager.STATE.GROUNDED)
-        {
-            animatorStateManager.SetToHanging();
             StateManager.SetState(StateManager.STATE.HANGING);
-            
-        }
-        else if(StateManager.GetState() == StateManager.STATE.GROUNDED)
-        {
-            animatorStateManager.SetToStatic();
-            
-        }
-
     }
 
     public void JumpRight()
@@ -69,10 +54,6 @@ public class CharacterBehaviour : MonoBehaviour
         if (StateManager.GetState() == StateManager.STATE.STATIC || StateManager.GetState() == StateManager.STATE.GROUNDED || StateManager.GetState() == StateManager.STATE.HANGING)
         {
             StateManager.SetState(StateManager.STATE.FREE);
-            rb.bodyType = RigidbodyType2D.Dynamic;
-            jcount = 1;
-            GameManager.player.transform.parent = null;
-            camController.moveToObject = false;
         }
 
         else if(StateManager.GetState() == StateManager.STATE.FREE)
@@ -94,26 +75,11 @@ public class CharacterBehaviour : MonoBehaviour
         
     }
 
-    private void ClampPositions()
-    {
-        Vector3 currentPos = transform.position;
-        currentPos.x = Mathf.Clamp(currentPos.x,-3.8f,3.8f);
-        currentPos.y = Mathf.Clamp(currentPos.y,-6,8);
-        transform.position = currentPos;
-    }
+   
 
-    public void StopHere()
-    {
-        rb.bodyType = RigidbodyType2D.Static;
-        animatorStateManager.SetToStatic();
-        
-    }
+    
 
-
-    public void Flip()
-    {
-
-    }
+   
     
 }
 
