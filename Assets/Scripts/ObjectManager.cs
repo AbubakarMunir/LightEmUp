@@ -31,11 +31,18 @@ public class ObjectManager : MonoBehaviour
             caughtOnce = true;
             HighLight();
             StartCoroutine(PlayParticles());
-            GameManager.player.transform.parent=transform;
+            //GameManager.player.transform.parent=transform;
             StateManager.SetState(StateManager.STATE.GROUNDED);
+            
             camController.waitToZoomOut = 0;
             camController.moveToObject = true;
             camController.activeObject = gameObject;
+        }
+
+        else
+        {
+            UnHighLight();
+            caughtOnce = false;
         }
        
     }
@@ -66,7 +73,7 @@ public class ObjectManager : MonoBehaviour
         Vector2 leftTop = center + new Vector2(-extents.x, extents.y);
         Vector2 rightBottom = center + new Vector2(extents.x, -extents.y);
         Vector2 leftBottom = center - extents;
-        if (point.x < rightTop.x && point.x > leftTop.x && point.y < rightTop.y && point.y > rightBottom.y)
+        if (point.x < rightTop.x && point.x > leftTop.x && point.y < rightTop.y && point.y < leftTop.y && point.y > rightBottom.y && point.y > leftBottom.y)
             return true;
         return false;
     }

@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class CharacterBehaviour : MonoBehaviour
 {
@@ -9,6 +10,12 @@ public class CharacterBehaviour : MonoBehaviour
     AnimatorStateManager animatorStateManager;
     //private Animator animator;
     public int jcount=1;
+    public float xforce;
+    public float yforce;
+
+    public Text x;
+    public Text y;
+   
     private void Awake()
     {
         camController = FindObjectOfType<CameraController>();
@@ -19,7 +26,9 @@ public class CharacterBehaviour : MonoBehaviour
    
     void Update()
     {
-        transform.rotation = Quaternion.identity;
+        x.text = xforce.ToString();
+        y.text = yforce.ToString();
+        transform.localRotation = Quaternion.identity;
         if(transform.position.y<-4 &&jcount<=0)
         {
             camController.death = true;
@@ -29,6 +38,22 @@ public class CharacterBehaviour : MonoBehaviour
             StateManager.SetState(StateManager.STATE.HANGING);
     }
 
+    public void IncX()
+    {
+        xforce += 1;
+    }
+    public void DecX()
+    {
+        xforce -= 1;
+    }
+    public void IncY()
+    {
+        yforce += 1;
+    }
+    public void DecY()
+    {
+        yforce -= 1;
+    }
     public void JumpRight()
     {
         CheckAndUpdateState();
@@ -36,7 +61,10 @@ public class CharacterBehaviour : MonoBehaviour
             return;
         transform.localScale = new Vector3(1, 1, 1);
         StateManager.SetState(StateManager.STATE.JUMPING);
-        rb.AddForce(new Vector2(1.5f, 10), ForceMode2D.Impulse);
+        rb.velocity = new Vector2(xforce, yforce);
+        //rb.AddForce(new Vector2(xforce, yforce), ForceMode2D.Impulse);
+        //rb.gravityScale = -1;
+        //rb.gravityScale = 1;
     }
 
     public void JumpLeft()
@@ -46,7 +74,10 @@ public class CharacterBehaviour : MonoBehaviour
             return;
         transform.localScale = new Vector3(-1, 1, 1);
         StateManager.SetState(StateManager.STATE.JUMPING);
-        rb.AddForce(new Vector2(-1.5f, 10), ForceMode2D.Impulse);
+        rb.velocity = new Vector2(-xforce,yforce);
+        //rb.AddForce(new Vector2(-xforce, yforce), ForceMode2D.Impulse);
+        //rb.gravityScale = -1;
+        //rb.gravityScale = 1;
     }
 
     private void CheckAndUpdateState()
