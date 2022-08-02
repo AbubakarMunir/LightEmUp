@@ -6,33 +6,22 @@ public class CharacterBehaviour : MonoBehaviour
 {
     CameraController camController;
     [SerializeField] private Rigidbody2D rb;
-    private Animator animator;
-    public enum STATE
-    {
-        STATIC = 0,
-        FREE=1,
-        CANTJUMP = 2,
-        GROUNDED = 3,
-        HANGING =4,
-        DEAD=5
-
-    }
-
-    public STATE currentState;
+    AnimatorStateManager animatorStateManager;
+    //private Animator animator;
     public int jcount=1;
     private void Awake()
     {
         camController = FindObjectOfType<CameraController>();
-        currentState = STATE.STATIC;
+        animatorStateManager = GetComponent<AnimatorStateManager>();
+        StateManager.SetState(StateManager.STATE.STATIC);
         rb = GetComponent<Rigidbody2D>();
-        animator = transform.GetChild(0).GetComponent<Animator>();
     }
     void Start()
     {
        
     }
 
-    // Update is called once per frame
+  
     void Update()
     {
         transform.rotation = Quaternion.identity;
@@ -41,16 +30,15 @@ public class CharacterBehaviour : MonoBehaviour
             camController.death = true;
             camController.moveToObject = false;
         }
-        if(!Physics.Raycast(transform.position, -Vector3.up, 0.2f) && currentState==STATE.GROUNDED)
+        if(!Physics.Raycast(transform.position, -Vector3.up, 0.2f) && StateManager.GetState()==StateManager.STATE.GROUNDED)
         {
-            animator.SetBool("hanging",true);
-            animator.SetBool("idle", false);
-            currentState = STATE.HANGING;
+            animatorStateManager.SetToHanging();
+            StateManager.SetState(StateManager.STATE.HANGING);
+            
         }
-        else if(currentState == STATE.GROUNDED)
+        else if(StateManager.GetState() == StateManager.STATE.GROUNDED)
         {
-            animator.SetBool("hanging", false);
-            animator.SetBool("idle", true);
+            animatorStateManager.SetToStatic();
             
         }
 
@@ -59,38 +47,35 @@ public class CharacterBehaviour : MonoBehaviour
     public void JumpRight()
     {
         CheckAndUpdateState();
-        if (currentState == STATE.CANTJUMP)
+        if (StateManager.GetState() == StateManager.STATE.CANTJUMP)
             return;
         transform.localScale = new Vector3(1, 1, 1);
-        animator.SetBool("flip",true);
-        animator.SetBool("idle", false);
+        animatorStateManager.SetToJump();
         rb.AddForce(new Vector2(1.5f, 10), ForceMode2D.Impulse);
     }
 
     public void JumpLeft()
     {
         CheckAndUpdateState();
-        if (currentState == STATE.CANTJUMP)
+        if (StateManager.GetState() == StateManager.STATE.CANTJUMP)
             return;
         transform.localScale = new Vector3(-1, 1, 1);
-        animator.SetBool("flip", true);
-        animator.SetBool("idle", false);
+        animatorStateManager.SetToJump();
         rb.AddForce(new Vector2(-1.5f, 10), ForceMode2D.Impulse);
     }
 
     private void CheckAndUpdateState()
     {
-        if (currentState == STATE.STATIC || currentState == STATE.GROUNDED || currentState == STATE.HANGING)
+        if (StateManager.GetState() == StateManager.STATE.STATIC || StateManager.GetState() == StateManager.STATE.GROUNDED || StateManager.GetState() == StateManager.STATE.HANGING)
         {
-            //animator.SetBool("idle", true);
-            currentState = STATE.FREE;
+            StateManager.SetState(StateManager.STATE.FREE);
             rb.bodyType = RigidbodyType2D.Dynamic;
             jcount = 1;
             GameManager.player.transform.parent = null;
             camController.moveToObject = false;
         }
 
-        else if(currentState==STATE.FREE)
+        else if(StateManager.GetState() == StateManager.STATE.FREE)
         {
             jcount++;
             if (jcount<=2)
@@ -100,8 +85,7 @@ public class CharacterBehaviour : MonoBehaviour
             }
             if (jcount > 2)
             {
-                currentState = STATE.CANTJUMP;
-                //jcount = 0;
+                StateManager.SetState(StateManager.STATE.CANTJUMP);
             }
                 
             
@@ -121,8 +105,7 @@ public class CharacterBehaviour : MonoBehaviour
     public void StopHere()
     {
         rb.bodyType = RigidbodyType2D.Static;
-        animator.SetBool("idle", true);
-        animator.SetBool("flip", false);
+        animatorStateManager.SetToStatic();
         
     }
 
@@ -136,5 +119,3 @@ public class CharacterBehaviour : MonoBehaviour
 
 
 
-//_current = Mathf.MoveTowards(_current, _target, speed * Time.deltaTime);
-//transform.position = Vector3.Lerp(Vector3.zero, goal, curve.Evaluate(_current));

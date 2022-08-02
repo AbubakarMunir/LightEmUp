@@ -17,7 +17,7 @@ public class CameraController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (GameManager.player.GetComponent<CharacterBehaviour>().currentState == CharacterBehaviour.STATE.STATIC)
+        if (StateManager.GetState()==StateManager.STATE.STATIC)
             return;
         if(death)
         {

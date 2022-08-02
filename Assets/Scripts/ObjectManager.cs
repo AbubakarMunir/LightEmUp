@@ -32,7 +32,7 @@ public class ObjectManager : MonoBehaviour
             StartCoroutine(PlayParticles());
             GameManager.player.transform.parent=transform;
             characterBehaviour.StopHere();
-            characterBehaviour.currentState = CharacterBehaviour.STATE.GROUNDED;
+            StateManager.SetState(StateManager.STATE.GROUNDED);
             camController.moveToObject = true;
             camController.activeObject = gameObject;
         }
