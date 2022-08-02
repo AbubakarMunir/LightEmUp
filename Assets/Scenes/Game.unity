@@ -24653,6 +24653,8 @@ GameObject:
   - component: {fileID: 1843855728}
   - component: {fileID: 1843855730}
   - component: {fileID: 1843855729}
+  - component: {fileID: 1843855732}
+  - component: {fileID: 1843855733}
   m_Layer: 0
   m_Name: Character
   m_TagString: Player
@@ -24673,7 +24675,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rb: {fileID: 0}
-  currentState: 0
   jcount: 1
 --- !u!61 &1843855729
 BoxCollider2D:
@@ -24737,6 +24738,30 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1843855732
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843855727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 535107dace539ba47a4211d028dbe4e6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1843855733
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1843855727}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4af89c8e4ce5c045af867bcd5e1a961, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1845450918
 GameObject:
   m_ObjectHideFlags: 0
