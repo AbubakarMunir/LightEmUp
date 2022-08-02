@@ -17,7 +17,7 @@ public class StateManager : MonoBehaviour
         GROUNDED = 3,
         HANGING = 4,
         DEAD = 5,
-
+        JUMPING =6
     }
 
     private void Awake()
@@ -46,6 +46,10 @@ public class StateManager : MonoBehaviour
         {
             instance.animatorStateManager.SetToStatic();
             instance.rb.bodyType = RigidbodyType2D.Static;
+        }
+        else if(state == STATE.JUMPING)
+        {
+            instance.animatorStateManager.SetToJump();
         }
         currentState = state;
     }
