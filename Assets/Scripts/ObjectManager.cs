@@ -33,6 +33,7 @@ public class ObjectManager : MonoBehaviour
             StartCoroutine(PlayParticles());
             GameManager.player.transform.parent=transform;
             StateManager.SetState(StateManager.STATE.GROUNDED);
+            camController.waitToZoomOut = 0;
             camController.moveToObject = true;
             camController.activeObject = gameObject;
         }
