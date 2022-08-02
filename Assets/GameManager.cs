@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     public static GameObject player;
@@ -20,5 +20,10 @@ public class GameManager : MonoBehaviour
         _player.transform.GetChild(0).gameObject.SetActive(true);
         _player.GetComponent<Rigidbody2D>().bodyType = RigidbodyType2D.Dynamic;
         startButton.SetActive(false);
+    }
+
+    public void Replay()
+    {
+        SceneManager.LoadScene("Game");
     }
 }
