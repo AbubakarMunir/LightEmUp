@@ -35,7 +35,7 @@ public class CharacterBehaviour : MonoBehaviour
         if (StateManager.GetState() == StateManager.STATE.CANTJUMP)
             return;
         transform.localScale = new Vector3(1, 1, 1);
-        animatorStateManager.SetToJump();
+        StateManager.SetState(StateManager.STATE.JUMPING);
         rb.AddForce(new Vector2(1.5f, 10), ForceMode2D.Impulse);
     }
 
@@ -45,7 +45,7 @@ public class CharacterBehaviour : MonoBehaviour
         if (StateManager.GetState() == StateManager.STATE.CANTJUMP)
             return;
         transform.localScale = new Vector3(-1, 1, 1);
-        animatorStateManager.SetToJump();
+        StateManager.SetState(StateManager.STATE.JUMPING);
         rb.AddForce(new Vector2(-1.5f, 10), ForceMode2D.Impulse);
     }
 
@@ -56,7 +56,7 @@ public class CharacterBehaviour : MonoBehaviour
             StateManager.SetState(StateManager.STATE.FREE);
         }
 
-        else if(StateManager.GetState() == StateManager.STATE.FREE)
+        else if( StateManager.GetState() == StateManager.STATE.JUMPING)
         {
             jcount++;
             if (jcount<=2)
