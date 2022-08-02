@@ -9,6 +9,7 @@ public class CameraController : MonoBehaviour
     public GameObject activeObject;
     public bool moveToObject;
     public bool death;
+    public ObjectsContainer objcontainer;
     void Start()
     {
         initialPos = transform.position;
@@ -23,11 +24,17 @@ public class CameraController : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, deathPos, 0.3f);
         }
-        else
+        else if(StateManager.GetState() == StateManager.STATE.HANGING)
         {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z + 7), 0.01f);
+            if (objcontainer.IsObjectRemaining())
+            {
+                ObjectManager objmanager = objcontainer.ReturnObjectRemaining();
+                transform.position = Vector3.Lerp(transform.position, new Vector3(objmanager.transform.position.x, objmanager.transform.position.y, initialPos.z + 5), 0.002f);
+            }
         }
-        
+        else
+            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z + 15), 0.01f);
+
         //if(moveToObject)
         //{
         //    transform.position = Vector3.Lerp(transform.position, new Vector3(activeObject.transform.position.x,activeObject.transform.position.y,initialPos.z+5), 0.01f);
@@ -41,4 +48,7 @@ public class CameraController : MonoBehaviour
         //    transform.position = Vector3.Lerp(transform.position, initialPos, 0.01f);
         //}
     }
+
+
+
 }

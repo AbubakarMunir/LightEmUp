@@ -10,7 +10,8 @@ public class ObjectManager : MonoBehaviour
     [SerializeField] Material simple;
     [SerializeField] Material highlighted;
     CharacterBehaviour characterBehaviour;
-    bool caughtOnce;
+    public bool inview;
+    public bool caughtOnce;
     // Start is called before the first frame update
     void Start()
     {
@@ -35,10 +36,7 @@ public class ObjectManager : MonoBehaviour
             camController.moveToObject = true;
             camController.activeObject = gameObject;
         }
-        else
-        {
-            caughtOnce = false;
-        }
+       
     }
 
     IEnumerator PlayParticles()
