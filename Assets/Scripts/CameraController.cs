@@ -25,7 +25,7 @@ public class CameraController : MonoBehaviour
         {
             transform.position = Vector3.Lerp(transform.position, deathPos, 0.3f);
         }
-        else if(StateManager.GetState() == StateManager.STATE.HANGING && waitToZoomOut>=1) //&& Constants.blockCount>1)
+        else if(StateManager.GetState() == StateManager.STATE.HANGING && waitToZoomOut>=1.5f) //&& Constants.blockCount>1)
         {
             if (objcontainer.IsObjectRemaining())
             {
@@ -36,13 +36,13 @@ public class CameraController : MonoBehaviour
 
         else if(StateManager.GetState()==StateManager.STATE.JUMPING)
         {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z), 0.01f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z+10), 0.01f);
         }
         else
         {
             if (StateManager.GetState() == StateManager.STATE.HANGING)
                 waitToZoomOut += Time.deltaTime;
-            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z + 15), 0.01f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z + 10), 0.01f);
 
         }
             
