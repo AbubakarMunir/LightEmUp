@@ -36,7 +36,7 @@ public class CameraController : MonoBehaviour
 
         else if(StateManager.GetState()==StateManager.STATE.JUMPING)
         {
-            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z+10), 0.01f);
+            transform.position = Vector3.Lerp(transform.position, new Vector3(GameManager.player.transform.position.x, GameManager.player.transform.position.y, initialPos.z+10), 0.015f);
         }
         else
         {

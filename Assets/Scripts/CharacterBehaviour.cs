@@ -13,9 +13,9 @@ public class CharacterBehaviour : MonoBehaviour
     public float xforce;
     public float yforce;
 
-    public Text x;
-    public Text y;
-   
+
+    private float currentX;
+    private float jumpStartTime;
     private void Awake()
     {
         camController = FindObjectOfType<CameraController>();
@@ -26,9 +26,12 @@ public class CharacterBehaviour : MonoBehaviour
    
     void Update()
     {
-        x.text = xforce.ToString();
-        y.text = yforce.ToString();
         transform.localRotation = Quaternion.identity;
+
+        if(StateManager.GetState()==StateManager.STATE.JUMPING)
+        {
+            HandleJump();
+        }
         if(transform.position.y<-4 &&jcount<=0)
         {
             camController.death = true;
@@ -38,22 +41,7 @@ public class CharacterBehaviour : MonoBehaviour
             StateManager.SetState(StateManager.STATE.HANGING);
     }
 
-    public void IncX()
-    {
-        xforce += 1;
-    }
-    public void DecX()
-    {
-        xforce -= 1;
-    }
-    public void IncY()
-    {
-        yforce += 1;
-    }
-    public void DecY()
-    {
-        yforce -= 1;
-    }
+    
     public void JumpRight()
     {
         CheckAndUpdateState();
@@ -61,7 +49,7 @@ public class CharacterBehaviour : MonoBehaviour
             return;
         transform.localScale = new Vector3(1, 1, 1);
         StateManager.SetState(StateManager.STATE.JUMPING);
-        rb.velocity = new Vector2(xforce, yforce);
+        Jump(xforce);
         //rb.AddForce(new Vector2(xforce, yforce), ForceMode2D.Impulse);
         //rb.gravityScale = -1;
         //rb.gravityScale = 1;
@@ -74,7 +62,7 @@ public class CharacterBehaviour : MonoBehaviour
             return;
         transform.localScale = new Vector3(-1, 1, 1);
         StateManager.SetState(StateManager.STATE.JUMPING);
-        rb.velocity = new Vector2(-xforce,yforce);
+        Jump(-xforce);
         //rb.AddForce(new Vector2(-xforce, yforce), ForceMode2D.Impulse);
         //rb.gravityScale = -1;
         //rb.gravityScale = 1;
@@ -107,9 +95,31 @@ public class CharacterBehaviour : MonoBehaviour
     }
 
    
+    public void Jump(float x)
+    {
+        jumpStartTime = Time.time;
+        currentX = x;
+        rb.velocity = new Vector2(currentX, yforce);
+    }
 
     
-
+    public void HandleJump()
+    {
+        if(Time.time-jumpStartTime<=0.2f)
+        {
+            rb.gravityScale = -3f;
+            rb.velocity = new Vector2(currentX, rb.velocity.y);
+        }
+        else if(Time.time - jumpStartTime <= 0.3f)
+        {
+            rb.gravityScale = 0;
+        }
+        else
+        {
+            rb.gravityScale = 4f;
+        }
+       
+    }
    
     
 }
